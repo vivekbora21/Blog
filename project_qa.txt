@@ -1,0 +1,59 @@
+1. What is the purpose of this React project?
+   Answer: This project is a registration form application built with React, allowing users to input personal details like full name, email, password, etc., with validation and submission handling.
+
+2. What build tool is used for this project?
+   Answer: The project uses Vite as the build tool for fast development and production builds.
+
+3. What are the main dependencies in package.json?
+   Answer: The main dependencies are React (^19.1.1) and React DOM (^19.1.1). DevDependencies include ESLint, Vite plugin for React, and TypeScript types.
+
+4. What is the project structure?
+   Answer: The project has a src/ directory with App.jsx, components/ (Form.jsx, InputField.jsx), and CSS files. It also includes public/, vite.config.js, and package.json.
+
+5. What fields are included in the registration form?
+   Answer: The form includes Full Name, Email, Password, Confirm Password, Gender (select), Date of Birth, Phone Number, and Address (textarea).
+
+6. How is form state managed in the Form component?
+   Answer: Form state is managed using useState hooks for formData (field values), errors (validation messages), and touched (fields interacted with).
+
+7. What validation is applied to the Full Name field?
+   Answer: Full Name must be 3-30 characters, start with a letter, and contain only letters and single spaces.
+
+8. How is email validation handled?
+   Answer: Email is validated using a regex pattern ^[^\s@]+@[^\s@]+\.[^\s@]+$ to ensure a valid email format.
+
+9. What is the password validation rule?
+   Answer: Password must be at least 6 characters long.
+
+10. How does the Confirm Password field work?
+    Answer: It checks if the value matches the Password field; if not, it shows "Passwords do not match".
+
+11. What validation is for the Phone Number field?
+    Answer: Phone must be exactly 10 digits, containing only numbers.
+
+12. How are form errors displayed?
+    Answer: Errors are shown below each input field in red text when validation fails.
+
+13. What happens when the form is submitted successfully?
+    Answer: An alert says "Form submitted successfully!" and the form data is logged to the console.
+
+14. How is focus managed on validation errors?
+    Answer: On submit, if there are errors, the first error field is focused using refs.
+
+15. What is the role of the InputField component?
+    Answer: InputField is a reusable component that renders input, select, or textarea based on props, handling labels, values, and errors.
+
+16. How is the form layout styled?
+    Answer: The form uses a CSS grid with auto-fit columns for responsiveness, white background, rounded corners, and shadows.
+
+17. Is the form responsive? How?
+    Answer: Yes, on screens smaller than 640px, the grid switches to a single column layout.
+
+18. What hooks are used in Form.jsx?
+    Answer: useState for state management, useEffect for real-time validation, and useRef for focusing elements.
+
+19. How does real-time validation work?
+    Answer: useEffect runs on changes to formData or touched, validating touched fields and updating errors.
+
+20. What is the entry point of the application?
+    Answer: The entry point is src/main.jsx, which renders the App component into the #root div using createRoot.

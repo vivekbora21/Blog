@@ -1,0 +1,202 @@
+/* Base */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #6c63ff, #5a55ff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Form container */
+.form {
+  background-color: #ffffff;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  width: 35vw;
+  animation: fadeIn 0.6s ease;
+}
+
+.form h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.form-grid {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  margin-bottom: 0.4rem;
+  color: #333;
+}
+
+/* Input, Textarea, Select styles */
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 0.7rem 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #6c63ff;
+  box-shadow: 0 0 0 3px rgba(108,99,255,0.2);
+}
+
+/* Error text fixed-height */
+.error {
+  display: block;
+  min-height: 18px;
+  color: #d93025;
+  font-size: 0.8rem;
+  margin-top: 0.4rem;
+  line-height: 1.2;
+  margin-top: 85px;
+  position: absolute;
+}
+
+/* Button */
+.submit-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #6c63ff;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #5a55ff;
+}
+
+/* required */
+.required-star {
+  color: red;
+  margin-left: 2px;
+}
+
+.error-container {
+  min-height: 18px;
+}
+
+.error {
+  color: red;
+  font-size: 0.85rem;
+}
+
+/* Link area */
+a {
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.link {
+  color: #6c63ff;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.link:hover {
+  color: #4a47cc;
+}
+
+.login-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+
+.signup-footer {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.signup-link {
+  color: #6c63ff;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.signup-link:hover {
+  color: #4a47cc;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(-10px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .form {
+    padding: 1.5rem;
+  }
+  .form h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* already existing base */
+.form-grid {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* for login page (1 column) */
+.form-grid.one-column {
+  grid-template-columns: 1fr;
+}
+
+/* for signup page (2 columns on desktop) */
+.form-grid.two-columns {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* still collapse to 1 column on small screens */
+@media (max-width: 600px) {
+  .form-grid.two-columns {
+    grid-template-columns: 1fr;
+  }
+}

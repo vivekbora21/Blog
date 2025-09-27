@@ -1,0 +1,125 @@
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from 'react-router-dom';
+import InputField from "./InputField";
+import "./LoginForm.css";
+
+const loginFields = [
+  { name: "email", label: "Email", type: "email" },
+  { name: "password", label: "Password", type: "password" },
+];
+
+const LoginForm = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState(
+    loginFields.reduce((acc, field) => ({ ...acc, [field.name]: "" }), {})
+  );
+
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+
+  const refs = loginFields.reduce(
+    (acc, field) => ({ ...acc, [field.name]: useRef(null) }),
+    {}
+  );
+
+  const validateField = (name, value) => {
+    let error = "";
+
+    switch (name) {
+      case "email":
+        if (!value || value.trim() === "") {return "Email is required";}
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) error = "Invalid email address";
+        break;
+
+      case "password":
+        if (!value || value.trim() === "") {return "Password is required";}
+        if (value.length < 6) error = "Password must be at least 6 characters";
+        break;
+
+      default:
+        break;
+    }
+
+    return error;
+  };
+
+  useEffect(() => {
+    const newErrors = {};
+    Object.keys(formData).forEach((key) => {
+      if (touched[key]) {
+        newErrors[key] = validateField(key, formData[key]);
+      } else {
+        newErrors[key] = "";
+      }
+    });
+    setErrors(newErrors);
+  }, [formData, touched]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleBlur = (name) => {
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    setErrors((prev) => ({...prev, [name]: validateField(name, formData[name])}));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formErrors = {};
+    Object.keys(formData).forEach((key) => {formErrors[key] = validateField(key, formData[key]);
+    });
+    setErrors(formErrors);
+
+    const firstErrorField = Object.keys(formErrors).find((key) => formErrors[key]);
+    if (firstErrorField) {
+      refs[firstErrorField].current.focus();
+      return;
+    }
+
+    alert("Login successful!");
+    console.log(formData);
+  };
+
+  return (
+    <form className="login-form" onSubmit={handleSubmit}>
+      <h1>Login</h1>
+
+      <div className="login-form-grid one-column">
+        {loginFields.map((field) => (
+          <InputField
+            key={field.name}
+            label={field.label}
+            name={field.name}
+            type={field.type}
+            value={formData[field.name]}
+            onChange={handleChange}
+            onBlur={() => handleBlur(field.name)}
+            error={errors[field.name]}
+            inputRef={refs[field.name]}
+            groupClass="login-form-group"
+            errorClass="login-error"
+          />
+        ))}
+        <div className="login-actions">
+        <span className="forgot-password"
+          onClick={() => navigate("/forgot-password")}>Forgot password?
+        </span>
+      </div>
+      </div>
+      <button type="submit" className="login-submit-btn">Login</button>
+      <div className="login-footer">
+        Don’t have an account?{" "}
+        <span className="login-link" onClick={() => navigate("/signup")}>
+          Sign up
+        </span>
+      </div>
+    </form>
+  );
+};
+
+export default LoginForm;
