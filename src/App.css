@@ -1,10 +1,12 @@
 /* App container styles */
+body {
+  margin: 0;
+  padding: 0;
+}
+
 #root {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+  padding-top: 80px; /* Space for fixed navbar */
 }
 
 .App {
@@ -13,3 +15,5 @@
   display: flex;
   justify-content: center;
 }
+
+

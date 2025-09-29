@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from 'react-router-dom';
+import { setCookie } from '../utils/auth.js';
 import InputField from "./InputField";
 import "./LoginForm.css";
 
@@ -17,32 +18,45 @@ const LoginForm = () => {
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
 
-  const refs = loginFields.reduce(
-    (acc, field) => ({ ...acc, [field.name]: useRef(null) }),
-    {}
-  );
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
 
-  const validateField = (name, value) => {
+  const refs = {
+    email: emailRef,
+    password: passwordRef,
+  };
+
+  const validateField = useCallback((name, value) => {
     let error = "";
 
     switch (name) {
-      case "email":
-        if (!value || value.trim() === "") {return "Email is required";}
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(value)) error = "Invalid email address";
+      case "email": {
+        if (!value || value.trim() === "") {
+          error = "Email is required";
+        } else {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(value)) {
+            error = "Invalid email address";
+          }
+        }
         break;
+      }
 
-      case "password":
-        if (!value || value.trim() === "") {return "Password is required";}
-        if (value.length < 6) error = "Password must be at least 6 characters";
+      case "password": {
+        if (!value || value.trim() === "") {
+          error = "Password is required";
+        } else if (value.length < 6) {
+          error = "Password must be at least 6 characters";
+        }
         break;
+      }
 
       default:
         break;
     }
 
     return error;
-  };
+  }, []);
 
   useEffect(() => {
     const newErrors = {};
@@ -54,7 +68,7 @@ const LoginForm = () => {
       }
     });
     setErrors(newErrors);
-  }, [formData, touched]);
+  }, [formData, touched, validateField]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -67,7 +81,7 @@ const LoginForm = () => {
     setErrors((prev) => ({...prev, [name]: validateField(name, formData[name])}));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formErrors = {};
@@ -81,8 +95,31 @@ const LoginForm = () => {
       return;
     }
 
-    alert("Login successful!");
-    console.log(formData);
+    try {
+      const response = await fetch('http://localhost:8000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setCookie('token', data.access_token);
+        alert("Login successful!");
+        navigate("/");
+      } else {
+        const errorData = await response.json();
+        alert(`Login failed: ${errorData.detail}`);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert("An error occurred during login.");
+    }
   };
 
   return (

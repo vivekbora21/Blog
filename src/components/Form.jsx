@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import InputField from "./InputField";
 import "./Form.css";
 import { useNavigate } from 'react-router-dom';
@@ -22,55 +22,96 @@ const Form = () => {
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
 
-  const refs = formFields.reduce(
-    (acc, field) => ({ ...acc, [field.name]: useRef(null) }),
-    {}
-  );
+  const fullNameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
+  const genderRef = useRef(null);
+  const phoneRef = useRef(null);
 
-  const validateField = (name, value) => {
+  const refs = {
+    fullName: fullNameRef,
+    email: emailRef,
+    password: passwordRef,
+    confirmPassword: confirmPasswordRef,
+    gender: genderRef,
+    phone: phoneRef,
+  };
+
+  const validateField = useCallback((name, value) => {
     let error = "";
 
     switch (name) {
-      case "fullName":
-        const regex = /^[A-Za-z](?:[A-Za-z]*|[A-Za-z]+(?: [A-Za-z]+)*)$/;
-        if (!value || value.trim() === "") {return "Full name is required";}
-        if (value.length < 3 || value.length > 50)
-          error = "Full Name must be 3-50 characters";
-        else if (!regex.test(value))
-          error =
-            "Only letters and single spaces allowed, must start with an alphabet";
+      case "fullName": {
+        if (!value || value.trim() === "") {
+          error = "Full name is required";
+        } else {
+          const regex = /^[A-Za-z](?:[A-Za-z]*|[A-Za-z]+(?: [A-Za-z]+)*)$/;
+          if (value.length < 3 || value.length > 50) {
+            error = "Full Name must be 3-50 characters";
+          } else if (!regex.test(value)) {
+            error = "Only letters and single spaces allowed, must start with an alphabet";
+          }
+        }
         break;
+      }
 
-      case "email":
-        if (!value || value.trim() === "") {return "Email is required";}
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(value)) error = "Invalid email address";
+      case "email": {
+        if (!value || value.trim() === "") {
+          error = "Email is required";
+        } else {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(value)) {
+            error = "Invalid email address";
+          }
+        }
         break;
+      }
 
-      case "password":
-        if (!value || value.trim() === "") {return "Password is required";}
-        if (value.length < 6) error = "Password must be at least 6 characters";
+      case "password": {
+        if (!value || value.trim() === "") {
+          error = "Password is required";
+        } else if (value.length < 6) {
+          error = "Password must be at least 6 characters";
+        }
         break;
+      }
 
-      case "confirmPassword":
-        if (!value || value.trim() === "") {return "Confirm Password is required";}
-        if (value !== formData.password) error = "Passwords do not match";
+      case "confirmPassword": {
+        if (!value || value.trim() === "") {
+          error = "Confirm Password is required";
+        } else if (value !== formData.password) {
+          error = "Passwords do not match";
+        }
         break;
+      }
 
-      case "phone":
-        if (!value || value.trim() === "") {return "Phone Number is required";}
-        if (!/^\d+$/.test(value)) error = "Phone must be digits only";
-        else if (value.length !== 10) error = "Phone number must be 10 digits";
+      case "phone": {
+        if (!value || value.trim() === "") {
+          error = "Phone Number is required";
+        } else {
+          if (!/^\d+$/.test(value)) {
+            error = "Phone must be digits only";
+          } else if (value.length !== 10) {
+            error = "Phone number must be 10 digits";
+          }
+        }
         break;
+      }
 
-      case "gender":
-        if (!value || value.trim() === "") {return "Gender is required";}
+      case "gender": {
+        if (!value || value.trim() === "") {
+          error = "Gender is required";
+        }
+        break;
+      }
+
       default:
         break;
     }
 
     return error;
-  };
+  }, [formData]);
 
   useEffect(() => {
     const newErrors = {};
@@ -82,19 +123,19 @@ const Form = () => {
       }
     });
     setErrors(newErrors);
-  }, [formData, touched]);
+  }, [formData, touched, validateField]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "fullName" && value.length > 30) return;
+    if (name === "fullName" && value.length > 50) return;
     if (name === "phone") {
       if (!/^\d*$/.test(value)) return;
       if (value.length > 10) return;
     }
 
     setTouched((prev) => ({ ...prev, [name]: true }));
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleBlur = (name) => {
@@ -102,7 +143,7 @@ const Form = () => {
     setErrors((prev) => ({...prev, [name]: validateField(name, formData[name])}));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formErrors = {};
@@ -116,8 +157,32 @@ const Form = () => {
       return;
     }
 
-    alert("Form submitted successfully!");
-    console.log(formData);
+    try {
+      const response = await fetch('http://localhost:8000/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          full_name: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+          gender: formData.gender,
+          phone: formData.phone,
+        }),
+      });
+
+      if (response.ok) {
+        alert("Signup successful! Please login.");
+        navigate("/login");
+      } else {
+        const errorData = await response.json();
+        alert(`Signup failed: ${errorData.detail}`);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert("An error occurred during signup.");
+    }
   };
 
   return (
