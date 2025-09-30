@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import InputField from "./InputField";
 import "./Form.css";
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const formFields = [
   { name: "fullName", label: "Full Name", type: "text", maxLength: 50 },
@@ -173,23 +174,23 @@ const Form = () => {
       });
 
       if (response.ok) {
-        alert("Signup successful! Please login.");
+        toast.success("Signup successful! Please login.");
         navigate("/login");
       } else {
         const errorData = await response.json();
-        alert(`Signup failed: ${errorData.detail}`);
+        toast.error(`Signup failed: ${errorData.detail}`);
       }
     } catch (error) {
       console.error('Error:', error);
-      alert("An error occurred during signup.");
+      toast.error("An error occurred during signup.");
     }
   };
 
   return (
-    <form className="form" onSubmit={handleSubmit}>
+    <form className="signup-form" onSubmit={handleSubmit}>
       <h1>Register</h1>
 
-      <div className="form-grid two-columns">
+      <div className="signup-form-grid two-columns">
         {formFields.map((field) => (
           <InputField
             key={field.name}
@@ -204,11 +205,13 @@ const Form = () => {
             inputRef={refs[field.name]}
             options={field.options}
             isTextarea={field.type === "textarea"}
+            groupClass="signup-form-group"
+            errorClass="signup-error"
           />
         ))}
       </div>
 
-      <button type="submit" className="submit-btn">
+      <button type="submit" className="signup-submit-btn">
         Submit
       </button>
       <div className="signup-footer">

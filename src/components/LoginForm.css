@@ -15,16 +15,16 @@ body {
 }
 
 /* Form container */
-.login-form {
+.independent-login-form {
   background-color: #ffffff;
   padding: 2rem 2.5rem;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
   width: 30vw;
-  animation: login-fadeIn 0.6s ease;
+  animation: independent-login-fadeIn 0.6s ease;
 }
 
-.login-form h1 {
+.independent-login-form h1 {
   text-align: center;
   margin-bottom: 1.5rem;
   font-size: 1.8rem;
@@ -32,19 +32,19 @@ body {
 }
 
 /* Form grid wrapper in your LoginForm */
-.login-form-grid {
+.independent-login-form-grid {
   display: grid;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
 
 /* Label + Input/Textarea/Select */
-.login-form-group {
+.independent-login-form-group {
   display: flex;
   flex-direction: column;
 }
 
-.login-form-group label {
+.independent-login-form-group label {
   font-size: 0.95rem;
   font-weight: 500;
   margin-top: 0.5rem;
@@ -53,9 +53,9 @@ body {
 }
 
 /* Input, Textarea, Select styles */
-.login-form-group input,
-.login-form-group textarea,
-.login-form-group select {
+.independent-login-form-group input,
+.independent-login-form-group textarea,
+.independent-login-form-group select {
   padding: 0.7rem 0.9rem;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -64,16 +64,16 @@ body {
   font-family: inherit;
 }
 
-.login-form-group input:focus,
-.login-form-group textarea:focus,
-.login-form-group select:focus {
+.independent-login-form-group input:focus,
+.independent-login-form-group textarea:focus,
+.independent-login-form-group select:focus {
   outline: none;
   border-color: #6c63ff;
   box-shadow: 0 0 0 3px rgba(108,99,255,0.2);
 }
 
 /* Error text fixed-height */
-.login-error {
+.independent-login-error {
   display: block;
   min-height: 18px;
   color: #d93025;
@@ -87,7 +87,7 @@ body {
 
 
 /* Button */
-.login-submit-btn {
+.independent-login-submit-btn {
   width: 100%;
   padding: 0.75rem;
   background-color: #6c63ff;
@@ -100,16 +100,16 @@ body {
   transition: background-color 0.3s ease;
 }
 
-.login-submit-btn:hover {
+.independent-login-submit-btn:hover {
   background-color: #5a55ff;
 }
-.login-actions {
+.independent-login-actions {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
 }
 
-.forgot-password {
+.independent-forgot-password {
   font-size: 0.9rem;
   color: #6c63ff;
   cursor: pointer;
@@ -119,31 +119,31 @@ body {
   margin-bottom: -2px;
 }
 
-.forgot-password:hover {
+.independent-forgot-password:hover {
   color: #4a47cc;
 }
 
-.login-footer {
+.independent-login-footer {
   text-align: center;
   margin-top: 1rem;
   font-size: 0.9rem;
   color: #555;
 }
 
-.login-link {
+.independent-login-link {
   color: #6c63ff;
   cursor: pointer;
   font-weight: 600;
   text-decoration: underline;
 }
 
-.login-link:hover {
+.independent-login-link:hover {
   color: #4a47cc;
 }
 
 
 /* Link area */
-a {
+.independent-login-link-area a {
   display: block;
   text-align: center;
   margin-top: 1rem;
@@ -151,68 +151,68 @@ a {
   color: #555;
 }
 
-.login-link {
+.independent-login-link {
   color: #6c63ff;
   cursor: pointer;
   font-weight: 600;
   text-decoration: underline;
 }
 
-.login-link:hover {
+.independent-login-link:hover {
   color: #4a47cc;
 }
 
 /* Required */
-.required-star {
+.independent-required-star {
   color: red;
   margin-left: 2px;
 }
 
-.error-container {
+.independent-error-container {
   min-height: 18px;
 }
 
-.error {
+.independent-error {
   color: red;
   font-size: 0.85rem;
 }
 
 /* Fade-in animation */
-@keyframes login-fadeIn {
+@keyframes independent-login-fadeIn {
   from {opacity: 0; transform: translateY(-10px);}
   to {opacity: 1; transform: translateY(0);}
 }
 
 /* Responsive tweaks */
 @media (max-width: 480px) {
-  .login-form {
+  .independent-login-form {
     padding: 1.5rem;
   }
-  .login-form h1 {
+  .independent-login-form h1 {
     font-size: 1.5rem;
   }
 }
 
 /* already existing base */
-.login-form-grid {
+.independent-login-form-grid {
   display: grid;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
 
 /* for login page (1 column) */
-.login-form-grid.one-column {
+.independent-login-form-grid.one-column {
   grid-template-columns: 1fr;
 }
 
 /* for signup page (2 columns on desktop) */
-.login-form-grid.two-columns {
+.independent-login-form-grid.two-columns {
   grid-template-columns: repeat(2, 1fr);
 }
 
 /* still collapse to 1 column on small screens */
 @media (max-width: 600px) {
-  .login-form-grid.two-columns {
+  .independent-login-form-grid.two-columns {
     grid-template-columns: 1fr;
   }
 }

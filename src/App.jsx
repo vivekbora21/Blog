@@ -7,6 +7,8 @@ import AddBlog from './components/AddBlog.jsx';
 import Navbar from './components/navbar.jsx';
 import Dashboard from './components/dashboard.jsx';
 import MyBlogs from './components/MyBlogs.jsx';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
@@ -21,6 +23,7 @@ function App() {
         <Route path="/myblogs" element={<MyBlogs />} />
         <Route path="/addblog" element={<AddBlog />} />
       </Routes>
+      <ToastContainer />
     </Router>
   )
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../utils/auth.js';
 import "./AddBlog.css";
+import { toast } from 'react-toastify';
 
 const API_URL = 'http://localhost:8000';
 
@@ -42,16 +43,16 @@ const AddBlog = () => {
       });
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        alert(`Error: ${response.status} - ${errorData.detail || 'Unknown error'}`);
+        toast.error(`Error: ${response.status} - ${errorData.detail || 'Unknown error'}`);
         return;
       }
-      alert('Blog added successfully!');
+      toast.success('Blog added successfully!');
       // Reset form
       setTitle('');
       setContent('');
       setImage(null);
     } catch (error) {
-      alert(`Network error: ${error.message}`);
+      toast.error(`Network error: ${error.message}`);
     }
   };
 

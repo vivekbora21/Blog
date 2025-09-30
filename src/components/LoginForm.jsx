@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { setCookie } from '../utils/auth.js';
 import InputField from "./InputField";
 import "./LoginForm.css";
+import { toast } from 'react-toastify';
 
 const loginFields = [
   { name: "email", label: "Email", type: "email" },
@@ -110,23 +111,23 @@ const LoginForm = () => {
       if (response.ok) {
         const data = await response.json();
         setCookie('token', data.access_token);
-        alert("Login successful!");
+        toast.success("Login successful!");
         navigate("/");
       } else {
         const errorData = await response.json();
-        alert(`Login failed: ${errorData.detail}`);
+        toast.error(`Login failed: ${errorData.detail}`);
       }
     } catch (error) {
       console.error('Error:', error);
-      alert("An error occurred during login.");
+      toast.error("An error occurred during login.");
     }
   };
 
   return (
-    <form className="login-form" onSubmit={handleSubmit}>
+    <form className="independent-login-form" onSubmit={handleSubmit}>
       <h1>Login</h1>
 
-      <div className="login-form-grid one-column">
+      <div className="independent-login-form-grid one-column">
         {loginFields.map((field) => (
           <InputField
             key={field.name}
@@ -138,20 +139,20 @@ const LoginForm = () => {
             onBlur={() => handleBlur(field.name)}
             error={errors[field.name]}
             inputRef={refs[field.name]}
-            groupClass="login-form-group"
-            errorClass="login-error"
+            groupClass="independent-login-form-group"
+            errorClass="independent-login-error"
           />
         ))}
-        <div className="login-actions">
-        <span className="forgot-password"
+        <div className="independent-login-actions">
+        <span className="independent-forgot-password"
           onClick={() => navigate("/forgot-password")}>Forgot password?
         </span>
       </div>
       </div>
-      <button type="submit" className="login-submit-btn">Login</button>
-      <div className="login-footer">
+      <button type="submit" className="independent-login-submit-btn">Login</button>
+      <div className="independent-login-footer">
         Don’t have an account?{" "}
-        <span className="login-link" onClick={() => navigate("/signup")}>
+        <span className="independent-login-link" onClick={() => navigate("/signup")}>
           Sign up
         </span>
       </div>
