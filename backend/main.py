@@ -2,6 +2,7 @@ from fastapi import FastAPI, UploadFile, File, Form, Depends, HTTPException, sta
 from typing import Optional
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials, OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 import shutil, os
 from models import Blog, User
@@ -26,12 +27,14 @@ app.add_middleware(
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
+app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
+
 Base.metadata.create_all(bind=engine)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 SECRET_KEY = "your-secret-key"  # In production, use env var
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 1440
 
 class UserCreate(BaseModel):
     full_name: str
@@ -70,17 +73,29 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+    if not credentials or not credentials.credentials:
+        raise credentials_exception
+    
     try:
+        # Log the received token for debugging purposes
+        print(f"Received token: {credentials.credentials}")
+        
         payload = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=[ALGORITHM])
         user_id: str = payload.get("sub")
+        
         if user_id is None:
             raise credentials_exception
-    except JWTError:
+    except JWTError as e:
+        print(f"JWT decoding error: {e}")
         raise credentials_exception
+    
     user = db.query(User).filter(User.id == user_id).first()
+    
     if user is None:
         raise credentials_exception
+    
     return {"id": user.id, "username": user.email}
+
 
 @app.post("/blogs")
 async def create_blog(
@@ -143,10 +158,39 @@ async def login(user: UserLogin, db: Session = Depends(get_db)):
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": db_user.id}, expires_delta=access_token_expires
+        data={"sub": str(db_user.id)}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
+@app.get("/blogs")
+def get_blogs(db: Session = Depends(get_db)):
+    blogs = db.query(Blog).all()
+    result = []
+    for blog in blogs:
+        result.append({
+            "id": blog.id,
+            "title": blog.title,
+            "author": blog.owner.fullname if blog.owner else "Unknown",
+            "created_at": blog.created_at,
+            "content": blog.content,
+            "image_url": blog.image_url
+        })
+    return result
+
+@app.get("/myblogs")
+def get_my_blogs(current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
+    blogs = db.query(Blog).filter(Blog.user_id == current_user['id']).all()
+    result = []
+    for blog in blogs:
+        result.append({
+            "id": blog.id,
+            "title": blog.title,
+            "author": blog.owner.fullname if blog.owner else "Unknown",
+            "created_at": blog.created_at,
+            "content": blog.content,
+            "image_url": blog.image_url
+        })
+    return result
 
 @app.post("/logout/")
 def logout(response: Response):

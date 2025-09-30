@@ -1,4 +1,3 @@
-/* Base */
 * {
   box-sizing: border-box;
 }
@@ -14,7 +13,6 @@ body {
   min-height: 100vh;
 }
 
-/* Form container */
 .independent-login-form {
   background-color: #ffffff;
   padding: 2rem 2.5rem;
@@ -31,14 +29,12 @@ body {
   color: #333;
 }
 
-/* Form grid wrapper in your LoginForm */
 .independent-login-form-grid {
   display: grid;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
 
-/* Label + Input/Textarea/Select */
 .independent-login-form-group {
   display: flex;
   flex-direction: column;
@@ -52,7 +48,6 @@ body {
   color: #333;
 }
 
-/* Input, Textarea, Select styles */
 .independent-login-form-group input,
 .independent-login-form-group textarea,
 .independent-login-form-group select {

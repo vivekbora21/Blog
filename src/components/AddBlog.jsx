@@ -47,7 +47,6 @@ const AddBlog = () => {
         return;
       }
       toast.success('Blog added successfully!');
-      // Reset form
       setTitle('');
       setContent('');
       setImage(null);
