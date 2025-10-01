@@ -19,7 +19,7 @@
 }
 
 .blog-card {
-  background: #fff;
+  background: linear-gradient(135deg, #dbd4e1, #ffffff);
   border-radius: 12px;
   padding: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -62,4 +62,33 @@
   grid-column: 1 / -1;
   text-align: center;
   color: #555;
+}
+
+.button-container {
+  display: flex;
+  gap: 1rem;
+}
+.edit-btn {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+.edit-btn:hover {
+  background-color: #1e7e34;
+}
+.delete-btn {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+.delete-btn:hover {
+  background-color: #c82333;
 }

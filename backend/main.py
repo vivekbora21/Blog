@@ -32,7 +32,7 @@ app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 Base.metadata.create_all(bind=engine)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-SECRET_KEY = "your-secret-key"  # In production, use env var
+SECRET_KEY = "your-secret-key"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 1440
 
@@ -77,7 +77,6 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
         raise credentials_exception
     
     try:
-        # Log the received token for debugging purposes
         print(f"Received token: {credentials.credentials}")
         
         payload = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=[ALGORITHM])
@@ -177,6 +176,20 @@ def get_blogs(db: Session = Depends(get_db)):
         })
     return result
 
+@app.get("/blogs/{blog_id}")
+def get_blog(blog_id: int, db: Session = Depends(get_db)):
+    blog = db.query(Blog).filter(Blog.id == blog_id).first()
+    if not blog:
+        raise HTTPException(status_code=404, detail="Blog not found")
+    return {
+        "id": blog.id,
+        "title": blog.title,
+        "author": blog.owner.fullname if blog.owner else "Unknown",
+        "created_at": blog.created_at,
+        "content": blog.content,
+        "image_url": blog.image_url
+    }
+
 @app.get("/myblogs")
 def get_my_blogs(current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
     blogs = db.query(Blog).filter(Blog.user_id == current_user['id']).all()
@@ -191,6 +204,46 @@ def get_my_blogs(current_user: dict = Depends(get_current_user), db: Session = D
             "image_url": blog.image_url
         })
     return result
+
+@app.put("/blogs/{blog_id}")
+async def update_blog(
+    blog_id: int,
+    title: str = Form(...),
+    content: str = Form(...),
+    image: Optional[UploadFile] = File(None),
+    current_user: dict = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    blog = db.query(Blog).filter(Blog.id == blog_id).first()
+    if not blog:
+        raise HTTPException(status_code=404, detail="Blog not found")
+    if blog.user_id != current_user['id']:
+        raise HTTPException(status_code=403, detail="Not authorized to update this blog")
+    
+    blog.title = title
+    blog.content = content
+    blog.updated_at = datetime.utcnow()
+    
+    if image:
+        file_location = os.path.join(UPLOAD_DIR, image.filename)
+        with open(file_location, "wb") as buffer:
+            shutil.copyfileobj(image.file, buffer)
+        blog.image_url = f"/uploads/{image.filename}"
+    
+    db.commit()
+    db.refresh(blog)
+    return {"message": "Blog updated successfully"}
+
+@app.delete("/blogs/{blog_id}")
+def delete_blog(blog_id: int, current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
+    blog = db.query(Blog).filter(Blog.id == blog_id).first()
+    if not blog:
+        raise HTTPException(status_code=404, detail="Blog not found")
+    if blog.user_id != current_user['id']:
+        raise HTTPException(status_code=403, detail="Not authorized to delete this blog")
+    db.delete(blog)
+    db.commit()
+    return {"message": "Blog deleted successfully"}
 
 @app.post("/logout/")
 def logout(response: Response):

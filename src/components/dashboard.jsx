@@ -38,7 +38,7 @@ const Dashboard = () => {
               </p>
               <button
                 className="read-more-btn"
-                onClick={() => alert(`Navigating to blog ${blog.id}`)}
+                onClick={() => window.location.href = `/blogs/${blog.id}`}
               >
                 Read More
               </button>

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../utils/auth.js';
 import "./Dashboard.css";
+import { toast } from 'react-toastify';
 
 const MyBlogs = () => {
   const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
 
-  useEffect(() => {
+  const fetchBlogs = () => {
     const token = getCookie("token");
     if (!token) {
       navigate('/login');
@@ -27,7 +28,39 @@ const MyBlogs = () => {
         setBlogs(data);
         })
         .catch((err) => console.error("Error fetching blogs:", err));
-    }, []);
+  };
+
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this blog?")) {
+      return;
+    }
+    const token = getCookie("token");
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+    try {
+      const response = await fetch(`http://localhost:8000/blogs/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        toast.error(`Error: ${response.status} - ${errorData.detail || 'Unknown error'}`);
+        return;
+      }
+      toast.success("Blog deleted successfully");
+      fetchBlogs();
+    } catch (error) {
+      toast.error(`Network error: ${error.message}`);
+    }
+  };
 
   return (
     <div className="dashboard">
@@ -50,10 +83,24 @@ const MyBlogs = () => {
               </p>
               <button
                 className="read-more-btn"
-                onClick={() => alert(`Navigate to blog ${blog.id}`)}
+                onClick={() => window.location.href = `/blogs/${blog.id}`}
               >
                 Read More
               </button>
+              <div className="button-container">
+                <button
+                  className="edit-btn"
+                  onClick={() => window.location.href = `/editblog/${blog.id}`}
+                >
+                  Update
+                </button>
+                <button
+                  className="delete-btn"
+                  onClick={() => handleDelete(blog.id)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))
         )}
