@@ -11,6 +11,10 @@ from passlib.context import CryptContext
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from pydantic import BaseModel
+import random
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 security = HTTPBearer()
 
@@ -75,25 +79,56 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
     )
     if not credentials or not credentials.credentials:
         raise credentials_exception
-    
+
     try:
         print(f"Received token: {credentials.credentials}")
-        
+
         payload = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=[ALGORITHM])
         user_id: str = payload.get("sub")
-        
+
         if user_id is None:
             raise credentials_exception
     except JWTError as e:
         print(f"JWT decoding error: {e}")
         raise credentials_exception
-    
+
     user = db.query(User).filter(User.id == user_id).first()
-    
+
     if user is None:
         raise credentials_exception
-    
+
     return {"id": user.id, "username": user.email}
+
+def send_email(to_email: str, otp: str):
+    sender_email = "svivek1199@gmail.com"
+    sender_password = "qlyv onbz vvmo dclq"
+    smtp_server = "smtp.gmail.com"
+    smtp_port = 587
+
+    msg = MIMEMultipart()
+    msg['From'] = sender_email
+    msg['To'] = to_email
+    msg['Subject'] = "Password Reset OTP"
+
+    body = f"""
+    <html>
+    <body>
+    <p>Your OTP for password reset is: <strong>{otp}</strong>. It is valid for 10 minutes.</p>
+    </body>
+    </html>
+    """
+    msg.attach(MIMEText(body, 'html'))
+
+    try:
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(sender_email, sender_password)
+        text = msg.as_string()
+        server.sendmail(sender_email, to_email, text)
+        server.quit()
+        print(f"OTP email sent successfully to {to_email}")
+    except Exception as e:
+        print(f"Failed to send email: {e}")
 
 
 @app.post("/blogs")
@@ -249,3 +284,39 @@ def delete_blog(blog_id: int, current_user: dict = Depends(get_current_user), db
 def logout(response: Response):
     response.delete_cookie(key="access_token")
     return {"message": "Logged out successfully"}
+
+@app.post("/forgot-password/")
+def forgot_password(email: str = Form(...), db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    otp = f"{random.randint(100000, 999999)}"
+    user.otp = otp
+    user.otp_expiry = datetime.utcnow() + timedelta(minutes=10)
+    db.commit()
+    send_email(user.email, otp)
+    print(f"Password reset OTP for {email}: {otp}") 
+    
+    return {"message": "Password reset OTP has been sent to your email"}
+
+@app.post("/verify-otp/")
+def verify_otp(email: str = Form(...), otp: str = Form(...), db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    if user.otp != otp or user.otp_expiry < datetime.utcnow():
+        raise HTTPException(status_code=400, detail="Invalid or expired OTP")
+    return {"message": "OTP verified successfully"}
+
+@app.post("/reset-password/")
+def reset_password(email: str = Form(...), new_password: str = Form(...), db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    if not user.otp or user.otp_expiry < datetime.utcnow():
+        raise HTTPException(status_code=400, detail="OTP not verified or expired")
+    user.password_hash = get_password_hash(new_password)
+    user.otp = None
+    user.otp_expiry = None
+    db.commit()
+    return {"message": "Password reset successfully"}

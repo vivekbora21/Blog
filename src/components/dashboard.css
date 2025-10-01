@@ -41,10 +41,11 @@
 .blog-summary {
   font-size: 0.9rem;
   color: #333;
-  flex-grow: 1;
 }
 
 .read-more-btn {
+  height: 40px;
+  width: 120px;
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -69,6 +70,7 @@
   gap: 1rem;
 }
 .edit-btn {
+  width: 30vw;
   background-color: #28a745;
   color: #fff;
   border: none;

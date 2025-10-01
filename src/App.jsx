@@ -10,6 +10,8 @@ import Dashboard from './components/dashboard.jsx';
 import MyBlogs from './components/MyBlogs.jsx';
 import BlogDetail from './components/BlogDetail.jsx';
 import { ToastContainer } from 'react-toastify';
+import ForgotPassword from './components/forgotPassword.jsx';
+import ResetPassword from './components/ResetPassword.jsx';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -21,10 +23,12 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<LoginForm/>}/>
         <Route path="/signup" element={<Form />} />
-      <Route path="/blogs/:id" element={<BlogDetail />} />
-      <Route path="/myblogs" element={<MyBlogs />} />
-      <Route path="/addblog" element={<AddBlog />} />
-      <Route path="/editblog/:id" element={<EditBlog />} />
+        <Route path="/blogs/:id" element={<BlogDetail />} />
+        <Route path="/myblogs" element={<MyBlogs />} />
+        <Route path="/addblog" element={<AddBlog />} />
+        <Route path="/editblog/:id" element={<EditBlog />} />
+        <Route path='/forgot-password' element={<ForgotPassword/>} />
+        <Route path='/reset-password' element={<ResetPassword/>} />
       </Routes>
       <ToastContainer />
     </Router>

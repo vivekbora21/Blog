@@ -11,6 +11,8 @@ class User(Base):
     gender = Column(String(10))
     phone = Column(String(15))
     password_hash = Column(String(255))
+    otp = Column(String(6), nullable=True)
+    otp_expiry = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     blogs = relationship("Blog", back_populates="owner")

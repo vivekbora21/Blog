@@ -83,14 +83,14 @@ const MyBlogs = () => {
               </p>
               <button
                 className="read-more-btn"
-                onClick={() => window.location.href = `/blogs/${blog.id}`}
+                onClick={() => navigate(`/blogs/${blog.id}`)}
               >
                 Read More
               </button>
               <div className="button-container">
                 <button
                   className="edit-btn"
-                  onClick={() => window.location.href = `/editblog/${blog.id}`}
+                  onClick={() => navigate(`/editblog/${blog.id}`)}
                 >
                   Update
                 </button>
