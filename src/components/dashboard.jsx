@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./Dashboard.css";
+import "./dashboard.css";
 
 const Dashboard = () => {
   const [blogs, setBlogs] = useState([]);
@@ -18,26 +18,26 @@ const Dashboard = () => {
     }, []);
 
   return (
-    <div className="dashboard">
-      <h1 className="dashboard-title">Latest Blogs</h1>
+    <div className="dash-dashboard">
+      <h1 className="dash-dashboard-title">Latest Blogs</h1>
 
-      <div className="blog-grid">
+      <div className="dash-blog-grid">
         {blogs.length === 0 ? (
-          <p className="no-blogs">No blogs available</p>
+          <p className="dash-no-blogs">No blogs available</p>
         ) : (
           blogs.map((blog) => (
-            <div className="blog-card" key={blog.id}>
+            <div className="dash-blog-card" key={blog.id}>
               <h2>{blog.title}</h2>
-              <p className="blog-meta">
+              <p className="dash-blog-meta">
                 By {blog.author} • {new Date(blog.created_at).toLocaleDateString()}
               </p>
-              <p className="blog-summary">
+              <p className="dash-blog-summary">
                 {blog.content.length > 150
                   ? blog.content.slice(0, 150) + "..."
                   : blog.content}
               </p>
               <button
-                className="read-more-btn"
+                className="dash-read-more-btn"
                 onClick={() => window.location.href = `/blogs/${blog.id}`}
               >
                 Read More

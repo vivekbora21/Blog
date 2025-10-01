@@ -26,6 +26,18 @@ const AddBlog = () => {
       navigate('/login');
       return;
     }
+
+    // Validation
+    if (title.length > 50) {
+      toast.error('Title must be 50 characters or less.');
+      return;
+    }
+    const words = content.trim().split(/\s+/);
+    if (words.length > 1000) {
+      toast.error('Content must be 1000 words or less.');
+      return;
+    }
+
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);

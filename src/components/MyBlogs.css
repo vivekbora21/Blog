@@ -1,4 +1,4 @@
-.dash-dashboard {
+.my-myblogs {
   width: 100vw;
   min-height: calc(100vh - 80px);
   padding: 2rem;
@@ -7,7 +7,7 @@
   font-family: 'Arial', sans-serif;
 }
 
-.dash-dashboard-title {
+.my-myblogs-title {
   text-align: center;
   margin-bottom: 3rem;
   font-size: 3rem;
@@ -16,13 +16,15 @@
   font-weight: bold;
 }
 
-.dash-blog-grid {
+.my-blog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.dash-blog-card {
+.my-blog-card {
   background: linear-gradient(135deg, #ffffff, #f8f9fa);
   border-radius: 20px;
   padding: 2rem;
@@ -32,12 +34,11 @@
   justify-content: space-between;
   height: auto;
   width: auto;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
-.dash-blog-card::before {
+.my-blog-card::before {
   content: '';
   position: absolute;
   top: 0;
@@ -47,34 +48,34 @@
   background: linear-gradient(90deg, #667eea, #764ba2);
 }
 
-.dash-blog-card:hover {
+.my-blog-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
-.dash-blog-card h2 {
+.my-blog-card h2 {
   margin-bottom: 0.5rem;
   color: #333;
   font-size: 1.5rem;
 }
 
-.dash-blog-meta {
+.my-blog-meta {
   font-size: 0.85rem;
   color: #777;
   margin-bottom: 1rem;
   font-style: italic;
 }
 
-.dash-blog-summary {
+.my-blog-summary {
   font-size: 1rem;
   color: #555;
   line-height: 1.6;
-  margin-bottom: 80px;
+  margin-bottom: 100px;
 }
 
-.dash-read-more-btn {
+.my-read-more-btn {
   position: absolute;
-  bottom: 20px;
+  bottom: 70px;
   left: 50%;
   transform: translateX(-50%);
   height: 45px;
@@ -88,15 +89,54 @@
   transition: background 0.3s ease, transform 0.3s ease;
 }
 
-.dash-read-more-btn:hover {
+.my-read-more-btn:hover {
   background: linear-gradient(135deg, #5a67d8, #6b46c1);
   transform: translateX(-50%) scale(1.05);
 }
 
-.dash-no-blogs {
+.my-no-myblogs {
   grid-column: 1 / -1;
   text-align: center;
   color: #fff;
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+.my-button-container {
+  display: flex;
+  gap: 1rem;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.my-edit-btn {
+  flex: 1;
+  background: linear-gradient(135deg, #4facfe 0%, #17bd49 100%);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.my-edit-btn:hover {
+  background: linear-gradient(135deg, #3a9efc 0%, #00e5fc 100%);
+  transform: scale(1.05);
+}
+.my-delete-btn {
+  flex: 1;
+  background: linear-gradient(135deg, #d4797c 0%, #d22d3d 100%);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.my-delete-btn:hover {
+  background: linear-gradient(135deg, #ff7a7f 0%, #fdbcb4 100%);
+  transform: scale(1.05);
 }
