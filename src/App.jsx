@@ -12,6 +12,7 @@ import BlogDetail from './components/BlogDetail.jsx';
 import { ToastContainer } from 'react-toastify';
 import ForgotPassword from './components/forgotPassword.jsx';
 import ResetPassword from './components/ResetPassword.jsx';
+import NotFound from './components/NotFound.jsx';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -29,6 +30,7 @@ function App() {
         <Route path="/editblog/:id" element={<EditBlog />} />
         <Route path='/forgot-password' element={<ForgotPassword/>} />
         <Route path='/reset-password' element={<ResetPassword/>} />
+        <Route path="*" element={<NotFound />} />  
       </Routes>
       <ToastContainer />
     </Router>

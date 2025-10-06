@@ -72,7 +72,6 @@ const BlogDetail = () => {
             src={`http://localhost:8000${blog.image_url}`}
             alt={blog.title}
             className="blog-image"
-            style={{ maxWidth: "100%", height: "auto", margin: "20px 0" }}
           />
         )}
         <div className="blog-content">
