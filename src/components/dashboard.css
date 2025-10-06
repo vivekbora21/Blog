@@ -1,102 +1,184 @@
+/* === DASHBOARD CONTAINER === */
 .dash-dashboard {
-  width: 100vw;
+  width: 100%;
+  max-width: 1500px;
   min-height: calc(100vh - 80px);
-  padding: 2rem;
+  padding: 2rem 1rem;
+  margin: 0 auto;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
+/* === TITLE === */
 .dash-dashboard-title {
   text-align: center;
   margin-bottom: 3rem;
   font-size: 3rem;
   color: #fff;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-  font-weight: bold;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  font-weight: 700;
+  letter-spacing: 1px;
+  animation: fadeInDown 0.8s ease;
 }
 
+/* === BLOG GRID === */
 .dash-blog-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2.5rem;
+  animation: fadeIn 1s ease;
 }
 
+@media (min-width: 1200px) {
+  .dash-blog-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dash-blog-grid {
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+/* === BLOG CARD === */
 .dash-blog-card {
-  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+  background: #fff;
   border-radius: 20px;
   padding: 2rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: auto;
-  width: auto;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  justify-content: flex-start;
+  height: 85%;
   position: relative;
   overflow: hidden;
+  transition: all 0.35s ease;
 }
 
 .dash-blog-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  height: 5px;
+  width: 100%;
+  height: 6px;
   background: linear-gradient(90deg, #667eea, #764ba2);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
 .dash-blog-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
 }
 
+/* === BLOG TITLE === */
 .dash-blog-card h2 {
   margin-bottom: 0.5rem;
   color: #333;
   font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+  min-height: 2.8em; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  transition: color 0.3s ease;
+  word-break: break-word;
+}
+
+.dash-blog-card:hover h2 {
+  color: #5a67d8;
+}
+
+.dash-blog-image {
+  width: 100%;
+  height: 180px;         
+  object-fit: cover;   
+  border-radius: 15px 15px 0 0;
+  margin-bottom: 1rem;
 }
 
 .dash-blog-meta {
-  font-size: 0.85rem;
-  color: #777;
+  font-size: 0.9rem;
+  color: #888;
   margin-bottom: 1rem;
   font-style: italic;
 }
 
+/* === BLOG SUMMARY === */
 .dash-blog-summary {
   font-size: 1rem;
   color: #555;
-  line-height: 1.6;
-  margin-bottom: 80px;
+  line-height: 1.7;
+  margin-bottom: 90px;
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+  text-align: justify;
 }
 
+/* === READ MORE BUTTON === */
 .dash-read-more-btn {
   position: absolute;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   height: 45px;
-  width: 140px;
+  width: 150px;
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: #fff;
   border: none;
   border-radius: 25px;
   cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s ease, transform 0.3s ease;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4);
 }
 
 .dash-read-more-btn:hover {
   background: linear-gradient(135deg, #5a67d8, #6b46c1);
-  transform: translateX(-50%) scale(1.05);
+  transform: translateX(-50%) scale(1.07);
+  box-shadow: 0 6px 14px rgba(102, 126, 234, 0.6);
 }
 
+/* === NO BLOGS MESSAGE === */
 .dash-no-blogs {
   grid-column: 1 / -1;
   text-align: center;
   color: #fff;
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 1.6rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+/* === ANIMATIONS === */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

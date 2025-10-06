@@ -1,19 +1,35 @@
 /* App container styles */
 body {
   margin: 0;
-  padding: 0;
+  padding: 0 1rem; /* Add horizontal padding to prevent edge touching */
+  box-sizing: border-box;
 }
 
 #root {
   min-height: 100vh;
-  padding-top: 80px; /* Space for fixed navbar */
+  padding-top: 80px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
 }
 
 .App {
   width: 100%;
   max-width: 1200px;
+  margin: 0 auto; /* Center horizontally */
   display: flex;
   justify-content: center;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 0 0.5rem;
+  }
+  #root {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
 }
 
 

@@ -198,7 +198,7 @@ async def login(user: UserLogin, db: Session = Depends(get_db)):
 
 @app.get("/blogs")
 def get_blogs(db: Session = Depends(get_db)):
-    blogs = db.query(Blog).all()
+    blogs = db.query(Blog).order_by(Blog.created_at.desc()).all()
     result = []
     for blog in blogs:
         result.append({
@@ -227,7 +227,7 @@ def get_blog(blog_id: int, db: Session = Depends(get_db)):
 
 @app.get("/myblogs")
 def get_my_blogs(current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
-    blogs = db.query(Blog).filter(Blog.user_id == current_user['id']).all()
+    blogs = db.query(Blog).filter(Blog.user_id == current_user['id']).order_by(Blog.created_at.desc()).all()
     result = []
     for blog in blogs:
         result.append({

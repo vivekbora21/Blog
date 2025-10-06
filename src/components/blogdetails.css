@@ -1,12 +1,19 @@
 .blog-detail {
   max-width: 800px;
-  margin: 2rem auto;
+  margin: 3rem auto;
   background-color: #ffffff;
   padding: 2.5rem 3rem;
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #2c3e50;
+}
+
+@media (max-width: 768px) {
+  .blog-detail {
+    margin: 2rem 1rem;
+    padding: 2rem 1.5rem;
+  }
 }
 
 .blog-title {
@@ -46,4 +53,8 @@
   letter-spacing: 0.01em;
   white-space: pre-line;
   word-wrap: break-word;
+}
+
+.back-btn {
+  background-color: rgb(73, 206, 148);
 }

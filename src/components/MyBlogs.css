@@ -1,7 +1,9 @@
 .my-myblogs {
-  width: 100vw;
+  width: 100%;
+  max-width: 1500px;
   min-height: calc(100vh - 80px);
-  padding: 2rem;
+  padding: 2rem 1rem;
+  margin: 0 auto;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   box-sizing: border-box;
   font-family: 'Arial', sans-serif;
@@ -16,127 +18,121 @@
   font-weight: bold;
 }
 
-.my-blog-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2.5rem;
-  max-width: 1200px;
+/* --- Blog List Container --- */
+.my-blog-list {
+  width: 95vw;
   margin: 0 auto;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  padding: 1rem;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 5px 25px rgba(0,0,0,0.1);
 }
 
-.my-blog-card {
-  background: linear-gradient(135deg, #ffffff, #f8f9fa);
-  border-radius: 20px;
-  padding: 2rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+/* --- Individual Blog Row --- */
+.my-blog-row {
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
   justify-content: space-between;
-  height: auto;
-  width: auto;
-  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.my-blog-row:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+/* --- Blog Info --- */
+.my-blog-info {
+  flex: 1;
+  margin-right: 1.5rem;
   overflow: hidden;
 }
 
-.my-blog-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 5px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-}
-
-.my-blog-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-}
-
-.my-blog-card h2 {
-  margin-bottom: 0.5rem;
+.my-blog-info h2 {
+  font-size: 1.4rem;
   color: #333;
-  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* limit title to 1 line */
 }
 
 .my-blog-meta {
   font-size: 0.85rem;
   color: #777;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   font-style: italic;
 }
 
 .my-blog-summary {
   font-size: 1rem;
   color: #555;
-  line-height: 1.6;
-  margin-bottom: 100px;
+  line-height: 1.5;
+  max-height: 3.6em; /* about 2 lines */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- Buttons Section --- */
+.my-button-container {
+  display: flex;
+  margin-top: 2%;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.my-edit-btn,
+.my-delete-btn,
+.my-read-more-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 25px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .my-read-more-btn {
-  position: absolute;
-  bottom: 70px;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 45px;
-  width: 140px;
+  margin-top: 2%;
   background: linear-gradient(135deg, #667eea, #764ba2);
-  color: #fff;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s ease, transform 0.3s ease;
 }
-
 .my-read-more-btn:hover {
   background: linear-gradient(135deg, #5a67d8, #6b46c1);
-  transform: translateX(-50%) scale(1.05);
+  transform: scale(1.05);
 }
 
-.my-no-myblogs {
-  grid-column: 1 / -1;
-  text-align: center;
-  color: #fff;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.my-button-container {
-  display: flex;
-  gap: 1rem;
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-}
 .my-edit-btn {
-  flex: 1;
   background: linear-gradient(135deg, #4facfe 0%, #17bd49 100%);
-  color: #fff;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s ease, transform 0.3s ease;
 }
 .my-edit-btn:hover {
   background: linear-gradient(135deg, #3a9efc 0%, #00e5fc 100%);
   transform: scale(1.05);
 }
+
 .my-delete-btn {
-  flex: 1;
   background: linear-gradient(135deg, #d4797c 0%, #d22d3d 100%);
-  color: #fff;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s ease, transform 0.3s ease;
 }
 .my-delete-btn:hover {
   background: linear-gradient(135deg, #ff7a7f 0%, #fdbcb4 100%);
   transform: scale(1.05);
+}
+
+/* --- No Blogs Message --- */
+.my-no-myblogs {
+  text-align: center;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 2rem;
 }

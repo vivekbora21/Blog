@@ -66,45 +66,32 @@ const MyBlogs = () => {
     <div className="my-myblogs">
       <h1 className="my-myblogs-title">My Blogs</h1>
 
-      <div className="my-blog-grid">
+      <div className="my-blog-list">
         {blogs.length === 0 ? (
           <p className="my-no-myblogs">No blogs available</p>
         ) : (
           blogs.map((blog) => (
-            <div className="my-blog-card" key={blog.id}>
-              <h2>{blog.title}</h2>
-              <p className="my-blog-meta">
-                By {blog.author} • {new Date(blog.created_at).toLocaleDateString()}
-              </p>
-              <p className="my-blog-summary">
-                {blog.content.length > 150
-                  ? blog.content.slice(0, 150) + "..."
-                  : blog.content}
-              </p>
-              <button
-                className="my-read-more-btn"
-                onClick={() => navigate(`/blogs/${blog.id}`)}
-              >
-                Read More
-              </button>
+            <div className="my-blog-row" key={blog.id}>
+              <div className="my-blog-info">
+                <h2>{blog.title.length > 50 ? blog.title.slice(0, 50) + "..." : blog.title}</h2>
+                <p className="my-blog-meta">
+                  By {blog.author} • {new Date(blog.created_at).toLocaleDateString()}
+                </p>
+                <p className="my-blog-summary">
+                  {blog.content.length > 150 ? blog.content.slice(0, 150) + "..." : blog.content}
+                </p>
+                <button className="my-read-more-btn" onClick={() => navigate(`/blogs/${blog.id}`)}>Read</button>
+              </div>
+
               <div className="my-button-container">
-                <button
-                  className="my-edit-btn"
-                  onClick={() => navigate(`/editblog/${blog.id}`)}
-                >
-                  Update
-                </button>
-                <button
-                  className="my-delete-btn"
-                  onClick={() => handleDelete(blog.id)}
-                >
-                  Delete
-                </button>
+                <button className="my-edit-btn" onClick={() => navigate(`/editblog/${blog.id}`)}>Update</button>
+                <button className="my-delete-btn" onClick={() => handleDelete(blog.id)}>Delete</button>
               </div>
             </div>
           ))
         )}
       </div>
+
     </div>
   );
 };
