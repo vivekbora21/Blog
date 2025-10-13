@@ -9,6 +9,9 @@ import Navbar from './components/navbar.jsx';
 import Dashboard from './components/dashboard.jsx';
 import MyBlogs from './components/MyBlogs.jsx';
 import BlogDetail from './components/BlogDetail.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+import PublicOnlyRoute from './components/PublicOnlyRoute.jsx';
+import { AuthProvider } from './utils/AuthContext.jsx';
 import { ToastContainer } from 'react-toastify';
 import ForgotPassword from './components/forgotPassword.jsx';
 import ResetPassword from './components/ResetPassword.jsx';
@@ -18,22 +21,24 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/login" element={<LoginForm/>}/>
-        <Route path="/signup" element={<Form />} />
-        <Route path="/blogs/:id" element={<BlogDetail />} />
-        <Route path="/myblogs" element={<MyBlogs />} />
-        <Route path="/addblog" element={<AddBlog />} />
-        <Route path="/editblog/:id" element={<EditBlog />} />
-        <Route path='/forgot-password' element={<ForgotPassword/>} />
-        <Route path='/reset-password' element={<ResetPassword/>} />
-        <Route path="*" element={<NotFound />} />  
-      </Routes>
-      <ToastContainer />
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/blogs/:id" element={<BlogDetail />} />
+          <Route path="/login" element={<PublicOnlyRoute><LoginForm /></PublicOnlyRoute>} />
+          <Route path="/signup" element={<PublicOnlyRoute><Form /></PublicOnlyRoute>} />
+          <Route path="/forgot-password" element={<PublicOnlyRoute><ForgotPassword /></PublicOnlyRoute>} />
+          <Route path="/reset-password" element={<PublicOnlyRoute><ResetPassword /></PublicOnlyRoute>} />
+          <Route path="/myblogs" element={<ProtectedRoute><MyBlogs /></ProtectedRoute>} />
+          <Route path="/addblog" element={<ProtectedRoute><AddBlog /></ProtectedRoute>} />
+          <Route path="/editblog/:id" element={<ProtectedRoute><EditBlog /></ProtectedRoute>} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <ToastContainer />
+      </Router>
+    </AuthProvider>
   )
 }
 

@@ -78,7 +78,7 @@ const MyBlogs = () => {
                   By {blog.author} • {new Date(blog.created_at).toLocaleDateString()}
                 </p>
                 <p className="my-blog-summary">
-                  {blog.content.length > 150 ? blog.content.slice(0, 150) + "..." : blog.content}
+                  {blog.content.length > 120 ? blog.content.slice(0, 120) + "..." : blog.content}
                 </p>
                 <button className="my-read-more-btn" onClick={() => navigate(`/blogs/${blog.id}`)}>Read</button>
               </div>

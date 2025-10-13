@@ -1,7 +1,7 @@
 /* App container styles */
 body {
   margin: 0;
-  padding: 0 1rem; /* Add horizontal padding to prevent edge touching */
+  padding: 0 1rem;
   box-sizing: border-box;
 }
 
@@ -10,7 +10,10 @@ body {
   padding-top: 80px;
   padding-left: 1rem;
   padding-right: 1rem;
+  padding-bottom: 1rem;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 .App {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { setCookie } from '../utils/auth.js';
+import { useAuth } from '../utils/AuthContext.jsx';
 import InputField from "./InputField";
 import "./LoginForm.css";
 import { toast } from 'react-toastify';
@@ -12,6 +13,8 @@ const loginFields = [
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
   const [formData, setFormData] = useState(
     loginFields.reduce((acc, field) => ({ ...acc, [field.name]: "" }), {})
   );
@@ -111,8 +114,10 @@ const LoginForm = () => {
       if (response.ok) {
         const data = await response.json();
         setCookie('token', data.access_token);
+        login();
         toast.success("Login successful!");
-        navigate("/");
+        const from = location.state?.from?.pathname || "/";
+        navigate(from, { replace: true });
       } else {
         const errorData = await response.json();
         toast.error(`Login failed: ${errorData.detail}`);
@@ -126,6 +131,11 @@ const LoginForm = () => {
   return (
     <form className="independent-login-form" onSubmit={handleSubmit}>
       <h1>Login</h1>
+      {location.state?.message && (
+        <div className="login-message">
+          {location.state.message}
+        </div>
+      )}
 
       <div className="independent-login-form-grid one-column">
         {loginFields.map((field) => (

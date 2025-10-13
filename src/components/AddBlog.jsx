@@ -15,7 +15,7 @@ const AddBlog = () => {
   useEffect(() => {
     const token = getCookie("token");
     if (!token) {
-      navigate('/login');
+      navigate('/login', { state: { message: 'Adding a blog requires login. Please log in to continue.' } });
     }
   }, [navigate]);
 
@@ -23,11 +23,10 @@ const AddBlog = () => {
     e.preventDefault();
     const token = getCookie("token");
     if (!token) {
-      navigate('/login');
+      navigate('/login', { state: { message: 'Adding a blog requires login. Please log in to continue.' } });
       return;
     }
 
-    // Validation
     if (title.length > 50) {
       toast.error('Title must be 50 characters or less.');
       return;
