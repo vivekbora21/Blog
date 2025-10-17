@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./blogdetails.css";
+import Loader from "./Loader.jsx";
 
 const BlogDetail = () => {
   const { id } = useParams();
@@ -27,11 +28,7 @@ const BlogDetail = () => {
   }, [id]);
 
   if (loading) {
-    return (
-      <div className="dashboard">
-        <p>Loading blog...</p>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error) {

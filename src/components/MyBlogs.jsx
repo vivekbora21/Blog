@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { getCookie } from "../utils/auth.js";
 import "./MyBlogs.css";
 import { toast } from "react-toastify";
+import Loader from "./Loader.jsx";
+import ConfirmationModal from "./ConfirmationModal.jsx";
 
 const MyBlogs = () => {
   const navigate = useNavigate();
@@ -10,6 +12,9 @@ const MyBlogs = () => {
   const [filteredBlogs, setFilteredBlogs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [blogToDelete, setBlogToDelete] = useState(null);
   const itemsPerPage = 9;
 
   // Fetch user's blogs
@@ -30,8 +35,12 @@ const MyBlogs = () => {
         console.log("Fetched my blogs:", data);
         setBlogs(data);
         setFilteredBlogs(data);
+        setLoading(false);
       })
-      .catch((err) => console.error("Error fetching blogs:", err));
+      .catch((err) => {
+        console.error("Error fetching blogs:", err);
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -39,8 +48,15 @@ const MyBlogs = () => {
   }, []);
 
   // Delete blog
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this blog?")) return;
+  const handleDeleteClick = (id) => {
+    setBlogToDelete(id);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    const id = blogToDelete;
+    setShowDeleteModal(false);
+    setBlogToDelete(null);
 
     const token = getCookie("token");
     if (!token) {
@@ -69,6 +85,11 @@ const MyBlogs = () => {
     }
   };
 
+  const cancelDelete = () => {
+    setShowDeleteModal(false);
+    setBlogToDelete(null);
+  };
+
   // Handle search
   useEffect(() => {
     if (searchTerm.trim() === "") {
@@ -81,7 +102,7 @@ const MyBlogs = () => {
       );
       setFilteredBlogs(filtered);
     }
-    setCurrentPage(1); // Reset to first page on search
+    setCurrentPage(1); 
   }, [searchTerm, blogs]);
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -98,6 +119,10 @@ const MyBlogs = () => {
       setCurrentPage(page);
     }
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="my-myblogs">
@@ -167,7 +192,7 @@ const MyBlogs = () => {
                 </button>
                 <button
                   className="my-delete-btn"
-                  onClick={() => handleDelete(blog.id)}
+                  onClick={() => handleDeleteClick(blog.id)}
                 >
                   Delete
                 </button>
@@ -205,6 +230,13 @@ const MyBlogs = () => {
           </button>
         </div>
       )}
+
+      <ConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={cancelDelete}
+        onConfirm={confirmDelete}
+        message="Are you sure you want to delete this blog?"
+      />
     </div>
   );
 };

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./dashboard.css";
 import { useNavigate } from "react-router-dom";
+import Loader from "./Loader.jsx";
 
 const Dashboard = () => {
   const [blogs, setBlogs] = useState([]);
   const [filteredBlogs, setFilteredBlogs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const itemsPerPage = 9;
   const navigate = useNavigate();
 
@@ -19,8 +21,12 @@ const Dashboard = () => {
       .then((data) => {
         setBlogs(data);
         setFilteredBlogs(data);
+        setLoading(false);
       })
-      .catch((err) => console.error("Error fetching blogs:", err));
+      .catch((err) => {
+        console.error("Error fetching blogs:", err);
+        setLoading(false);
+      });
   }, []);
 
   // Search filter
@@ -36,13 +42,12 @@ const Dashboard = () => {
       );
       setFilteredBlogs(filtered);
     }
-    setCurrentPage(1); // Reset to first page on search
+    setCurrentPage(1);
   }, [searchTerm, blogs]);
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
   const clearSearch = () => setSearchTerm("");
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredBlogs.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -54,6 +59,10 @@ const Dashboard = () => {
     }
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <div className="dash-dashboard">
       <div className="dash-dashboard-header">
@@ -62,7 +71,7 @@ const Dashboard = () => {
           <div className="dash-search-wrapper">
             <input
               type="text"
-              placeholder="Search blogs by title, content, or author..."
+              placeholder="Search your blogs..."
               value={searchTerm}
               onChange={handleSearchChange}
               className="dash-search-input"

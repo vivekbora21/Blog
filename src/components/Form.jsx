@@ -3,6 +3,7 @@ import InputField from "./InputField";
 import "./Form.css";
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Loader from "./Loader.jsx";
 
 const formFields = [
   { name: "fullName", label: "Full Name", type: "text", maxLength: 50 },
@@ -22,6 +23,7 @@ const Form = () => {
 
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const fullNameRef = useRef(null);
   const emailRef = useRef(null);
@@ -158,6 +160,7 @@ const Form = () => {
       return;
     }
 
+    setLoading(true);
     try {
       const response = await fetch('http://localhost:8000/signup', {
         method: 'POST',
@@ -183,44 +186,49 @@ const Form = () => {
     } catch (error) {
       console.error('Error:', error);
       toast.error("An error occurred during signup.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <form className="signup-form" onSubmit={handleSubmit}>
-      <h1>Register</h1>
+    <>
+      {loading && <Loader />}
+      <form className="signup-form" onSubmit={handleSubmit}>
+        <h1>Register</h1>
 
-      <div className="signup-form-grid two-columns">
-        {formFields.map((field) => (
-          <InputField
-            key={field.name}
-            label={field.label}
-            name={field.name}
-            type={field.type === "textarea" ? "text" : field.type}
-            value={formData[field.name]}
-            onChange={handleChange}
-            onBlur={() => handleBlur(field.name)}
-            error={errors[field.name]}
-            maxLength={field.maxLength}
-            inputRef={refs[field.name]}
-            options={field.options}
-            isTextarea={field.type === "textarea"}
-            groupClass="signup-form-group"
-            errorClass="signup-error"
-          />
-        ))}
-      </div>
+        <div className="signup-form-grid two-columns">
+          {formFields.map((field) => (
+            <InputField
+              key={field.name}
+              label={field.label}
+              name={field.name}
+              type={field.type === "textarea" ? "text" : field.type}
+              value={formData[field.name]}
+              onChange={handleChange}
+              onBlur={() => handleBlur(field.name)}
+              error={errors[field.name]}
+              maxLength={field.maxLength}
+              inputRef={refs[field.name]}
+              options={field.options}
+              isTextarea={field.type === "textarea"}
+              groupClass="signup-form-group"
+              errorClass="signup-error"
+            />
+          ))}
+        </div>
 
-      <button type="submit" className="signup-submit-btn">
-        Submit
-      </button>
-      <div className="signup-footer">
-        Aready have an account?{" "}
-        <span className="signup-link" onClick={() => navigate("/login")}>
-          Login
-        </span>
-      </div>
-    </form>
+        <button type="submit" className="signup-submit-btn">
+          Submit
+        </button>
+        <div className="signup-footer">
+          Aready have an account?{" "}
+          <span className="signup-link" onClick={() => navigate("/login")}>
+            Login
+          </span>
+        </div>
+      </form>
+    </>
   );
 };
 

@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCookie } from '../utils/auth.js';
 import "./AddBlog.css";
+import Footer from "./Footer.jsx"
 import { toast } from 'react-toastify';
+import Loader from "./Loader.jsx";
 
 const API_URL = 'http://localhost:8000';
 
@@ -51,6 +53,17 @@ const EditBlog = () => {
       navigate('/login');
       return;
     }
+
+    if (title.length > 50) {
+      toast.error('Title must be 50 characters or less.');
+      return;
+    }
+    const words = content;
+    if (words.length > 1000) {
+      toast.error('Content must be 1000 words or less.');
+      return;
+    }
+
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);
@@ -79,63 +92,71 @@ const EditBlog = () => {
   };
 
   if (loading) {
-    return <div className="dashboard"><p>Loading...</p></div>;
+    return <Loader />;
   }
 
   return (
-    <form className="addblog-form" onSubmit={handleSubmit}>
-      <h2>Edit Blog</h2>
+    <div>
+      <form className="addblog-form" onSubmit={handleSubmit}>
+        <h2>Edit Blog</h2>
 
-      <div className="form-group" data-count={`${title.length}/50`}>
-        <label htmlFor="title">Blog Title</label>
-        <input
-          id="title"
-          className="title-input"
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Enter your blog title"
-          required
-        />
-      </div>
-
-      <div className="form-group" data-count={`${content.length}/1000`}>
-        <label htmlFor="content">Blog Content</label>
-        <textarea
-          id="content"
-          className="content-textarea"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="Write your blog content here..."
-          required
-        />
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="image">Featured Image</label>
-        {existingImage && (
-          <div>
-            <p>Current Image:</p>
-            <img src={`${API_URL}${existingImage}`} alt="Current" style={{ maxWidth: '200px', maxHeight: '200px' }} />
-          </div>
-        )}
-        <div className="file-input-wrapper" data-filename={image ? image.name : 'No file chosen'}>
+        <div className="form-group" data-count={`${title.length}/50`}>
+          <label htmlFor="title">Blog Title</label>
           <input
-            id="image"
-            type="file"
-            onChange={(e) => setImage(e.target.files[0])}
-            accept="image/*"
+            id="title"
+            className="title-input"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Enter your blog title"
+            required
           />
-          <label htmlFor="image" className="file-input-label">
-            Choose New Image File (leave empty to keep current)
-          </label>
         </div>
-      </div>
 
-      <button type="submit" className="submit-btn">
-        Update Blog
-      </button>
-    </form>
+        <div className="form-group" data-count={`${content.length}/1000`}>
+          <label htmlFor="content">Blog Content</label>
+          <textarea
+            id="content"
+            className="content-textarea"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="Write your blog content here..."
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="image">Featured Image</label>
+          {existingImage && (
+            <div>
+              <p>Current Image:</p>
+              <img src={`${API_URL}${existingImage}`} alt="Current" style={{ maxWidth: '200px', maxHeight: '200px' }} />
+            </div>
+          )}
+          <div className="file-input-wrapper" data-filename={image ? image.name : 'No file chosen'}>
+            <input
+              id="image"
+              type="file"
+              onChange={(e) => setImage(e.target.files[0])}
+              accept="image/*"
+            />
+            <label htmlFor="image" className="file-input-label">
+              Choose New Image File (leave empty to keep current)
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <button type="submit" className="submit-button">
+            Update Blog
+          </button>
+          <button type="button" className="back-button" onClick={() => navigate(-1)}>
+            Back
+          </button>
+        </div>
+      </form>
+      <Footer />
+    </div>
   );
 };
 

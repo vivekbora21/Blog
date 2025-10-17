@@ -114,7 +114,7 @@ const AddBlog = () => {
         <button type="submit" className="submit-button">
           Publish Blog
         </button>
-        <button className="back-button" onClick={() => navigate(-1)}>
+        <button type="button" className="back-button" onClick={() => navigate(-1)}>
           Back
         </button>
       </div>

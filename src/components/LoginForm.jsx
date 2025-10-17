@@ -5,6 +5,7 @@ import { useAuth } from '../utils/AuthContext.jsx';
 import InputField from "./InputField";
 import "./LoginForm.css";
 import { toast } from 'react-toastify';
+import Loader from "./Loader.jsx";
 
 const loginFields = [
   { name: "email", label: "Email", type: "email" },
@@ -21,6 +22,7 @@ const LoginForm = () => {
 
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -99,6 +101,7 @@ const LoginForm = () => {
       return;
     }
 
+    setLoading(true);
     try {
       const response = await fetch('http://localhost:8000/login', {
         method: 'POST',
@@ -125,48 +128,53 @@ const LoginForm = () => {
     } catch (error) {
       console.error('Error:', error);
       toast.error("An error occurred during login.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <form className="independent-login-form" onSubmit={handleSubmit}>
-      <h1>Login</h1>
-      {location.state?.message && (
-        <div className="login-message">
-          {location.state.message}
-        </div>
-      )}
+    <>
+      {loading && <Loader />}
+      <form className="independent-login-form" onSubmit={handleSubmit}>
+        <h1>Login</h1>
+        {location.state?.message && (
+          <div className="login-message">
+            {location.state.message}
+          </div>
+        )}
 
-      <div className="independent-login-form-grid one-column">
-        {loginFields.map((field) => (
-          <InputField
-            key={field.name}
-            label={field.label}
-            name={field.name}
-            type={field.type}
-            value={formData[field.name]}
-            onChange={handleChange}
-            onBlur={() => handleBlur(field.name)}
-            error={errors[field.name]}
-            inputRef={refs[field.name]}
-            groupClass="independent-login-form-group"
-            errorClass="independent-login-error"
-          />
-        ))}
-        <div className="independent-login-actions">
-        <span className="independent-forgot-password"
-          onClick={() => navigate("/forgot-password")}>Forgot password?
-        </span>
-      </div>
-      </div>
-      <button type="submit" className="independent-login-submit-btn">Login</button>
-      <div className="independent-login-footer">
-        Don’t have an account?{" "}
-        <span className="independent-login-link" onClick={() => navigate("/signup")}>
-          Sign up
-        </span>
-      </div>
-    </form>
+        <div className="independent-login-form-grid one-column">
+          {loginFields.map((field) => (
+            <InputField
+              key={field.name}
+              label={field.label}
+              name={field.name}
+              type={field.type}
+              value={formData[field.name]}
+              onChange={handleChange}
+              onBlur={() => handleBlur(field.name)}
+              error={errors[field.name]}
+              inputRef={refs[field.name]}
+              groupClass="independent-login-form-group"
+              errorClass="independent-login-error"
+            />
+          ))}
+          <div className="independent-login-actions">
+          <span className="independent-forgot-password"
+            onClick={() => navigate("/forgot-password")}>Forgot password?
+          </span>
+        </div>
+        </div>
+        <button type="submit" className="independent-login-submit-btn">Login</button>
+        <div className="independent-login-footer">
+          Don’t have an account?{" "}
+          <span className="independent-login-link" onClick={() => navigate("/signup")}>
+            Sign up
+          </span>
+        </div>
+      </form>
+    </>
   );
 };
 
