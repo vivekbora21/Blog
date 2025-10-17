@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./dashboard.css";
-import Footer from "./Footer.jsx";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
@@ -168,8 +167,6 @@ const Dashboard = () => {
           </button>
         </div>
       )}
-
-      <Footer />
     </div>
     
   );

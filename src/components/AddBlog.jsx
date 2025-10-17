@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../utils/auth.js';
 import "./AddBlog.css";
+import Footer from "./Footer.jsx"
 import { toast } from 'react-toastify';
 
 const API_URL = 'http://localhost:8000';
@@ -109,14 +110,16 @@ const AddBlog = () => {
           </label>
         </div>
       </div>
-
-      <button type="submit" className="submit-button">
-        Publish Blog
-      </button>
-      <button className="back-button" onClick={() => navigate(-1)}>
-        Back
-      </button>
+      <div>
+        <button type="submit" className="submit-button">
+          Publish Blog
+        </button>
+        <button className="back-button" onClick={() => navigate(-1)}>
+          Back
+        </button>
+      </div>
     </form>
+    
   );
 };
 

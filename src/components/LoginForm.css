@@ -87,7 +87,7 @@ body {
 .independent-login-submit-btn {
   width: 100%;
   padding: 0.75rem;
-  background: #61dafb;
+  background: #34a1bf;
   border: none;
   border-radius: 8px;
   color: #fff;
@@ -104,16 +104,20 @@ body {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
+  overflow-y: hidden;
+}
+span {
+  color: red;
 }
 
 .independent-forgot-password {
-  font-size: 0.9rem;
-  color: #61dafb;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #26829b;
   cursor: pointer;
   text-decoration: underline;
-  margin-right: 260px;
+  margin-right: 200px;
   margin-top: 10px;
-  margin-bottom: -2px;
 }
 
 .independent-forgot-password:hover {
@@ -127,18 +131,6 @@ body {
   color: #555;
 }
 
-.independent-login-link {
-  color: #61dafb;
-  cursor: pointer;
-  font-weight: 600;
-  text-decoration: underline;
-}
-
-.independent-login-link:hover {
-  color: #1f8bcd;
-}
-
-
 /* Link area */
 .independent-login-link-area a {
   display: block;
@@ -149,7 +141,7 @@ body {
 }
 
 .independent-login-link {
-  color: #61dafb;
+  color: #319fbe;
   cursor: pointer;
   font-weight: 600;
   text-decoration: underline;

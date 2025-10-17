@@ -51,7 +51,7 @@
 
 /* === SEARCH CONTAINER === */
 .dash-search-container {
-  max-width: 350px;
+  max-width: 700px;
   margin: 0;
 }
 
@@ -60,11 +60,12 @@
   display: flex;
   align-items: center;
   margin: 0;
-  background: rgba(255, 255, 255, 0.1);
+  color: black;
+  background: rgba(255, 255, 255, 0.921);
   backdrop-filter: blur(10px);
-  border-radius: 25px;
+  border-radius: 5px;
   padding: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(176, 0, 0, 0.2);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
@@ -80,20 +81,20 @@
   padding: 12px 45px 12px 15px;
   border: none;
   background: transparent;
-  color: white;
+  color: rgb(0, 0, 0);
   font-size: 1rem;
   outline: none;
   border-radius: 25px;
 }
 
 .dash-search-input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .dash-search-icon {
   position: absolute;
   right: 45px;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(0, 0, 0, 0.8);
   font-size: 1.1rem;
   pointer-events: none;
 }

@@ -10,7 +10,7 @@ body {
   padding-top: 80px;
   padding-left: 1rem;
   padding-right: 1rem;
-  padding-bottom: 1rem;
+  padding-bottom: 20px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

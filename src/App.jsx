@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
 import Form from './components/Form.jsx';
 import LoginForm from './components/LoginForm.jsx';
@@ -16,6 +16,7 @@ import { ToastContainer } from 'react-toastify';
 import ForgotPassword from './components/forgotPassword.jsx';
 import ResetPassword from './components/ResetPassword.jsx';
 import NotFound from './components/NotFound.jsx';
+import Footer from './components/Footer.jsx';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -23,23 +24,35 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/blogs/:id" element={<BlogDetail />} />
-          <Route path="/login" element={<PublicOnlyRoute><LoginForm /></PublicOnlyRoute>} />
-          <Route path="/signup" element={<PublicOnlyRoute><Form /></PublicOnlyRoute>} />
-          <Route path="/forgot-password" element={<PublicOnlyRoute><ForgotPassword /></PublicOnlyRoute>} />
-          <Route path="/reset-password" element={<PublicOnlyRoute><ResetPassword /></PublicOnlyRoute>} />
-          <Route path="/myblogs" element={<ProtectedRoute><MyBlogs /></ProtectedRoute>} />
-          <Route path="/addblog" element={<ProtectedRoute><AddBlog /></ProtectedRoute>} />
-          <Route path="/editblog/:id" element={<ProtectedRoute><EditBlog /></ProtectedRoute>} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <ToastContainer />
+        <AppContent />
       </Router>
     </AuthProvider>
   )
+}
+
+function AppContent() {
+  const location = useLocation();
+  const hideFooter = location.pathname === '/login' || location.pathname === '/signup';
+
+  return (
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/blogs/:id" element={<BlogDetail />} />
+        <Route path="/login" element={<PublicOnlyRoute><LoginForm /></PublicOnlyRoute>} />
+        <Route path="/signup" element={<PublicOnlyRoute><Form /></PublicOnlyRoute>} />
+        <Route path="/forgot-password" element={<PublicOnlyRoute><ForgotPassword /></PublicOnlyRoute>} />
+        <Route path="/reset-password" element={<PublicOnlyRoute><ResetPassword /></PublicOnlyRoute>} />
+        <Route path="/myblogs" element={<ProtectedRoute><MyBlogs /></ProtectedRoute>} />
+        <Route path="/addblog" element={<ProtectedRoute><AddBlog /></ProtectedRoute>} />
+        <Route path="/editblog/:id" element={<ProtectedRoute><EditBlog /></ProtectedRoute>} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      {!hideFooter && <Footer />}
+      <ToastContainer />
+    </>
+  );
 }
 
 export default App;
