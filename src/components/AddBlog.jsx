@@ -70,7 +70,7 @@ const AddBlog = () => {
     <form className="addblog-form" onSubmit={handleSubmit}>
       <h2>Add New Blog</h2>
       
-      <div className="form-group">
+      <div className="form-group" data-count={`${title.length}/50`}>
         <label htmlFor="title">Blog Title</label>
         <input
           id="title"
@@ -83,7 +83,7 @@ const AddBlog = () => {
         />
       </div>
 
-      <div className="form-group">
+      <div className="form-group" data-count={`${content.length}/1000`}>
         <label htmlFor="content">Blog Content</label>
         <textarea
           id="content"
@@ -97,7 +97,7 @@ const AddBlog = () => {
 
       <div className="form-group">
         <label htmlFor="image">Featured Image</label>
-        <div className="file-input-wrapper">
+        <div className="file-input-wrapper" data-filename={image ? image.name : 'No file chosen'}>
           <input
             id="image"
             type="file"
@@ -110,8 +110,11 @@ const AddBlog = () => {
         </div>
       </div>
 
-      <button type="submit" className="submit-btn">
+      <button type="submit" className="submit-button">
         Publish Blog
+      </button>
+      <button className="back-button" onClick={() => navigate(-1)}>
+        Back
       </button>
     </form>
   );

@@ -1,24 +1,40 @@
+/* === GLOBAL RESETS === */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* === DASHBOARD MAIN CONTAINER === */
 .dash-dashboard {
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 40px 20px;
 }
 
-/* Dashboard Title */
+/* === DASHBOARD HEADER (TITLE + SEARCH) === */
+.dash-dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 1500px;
+  margin: 0 auto 50px auto;
+  padding: 0 20px;
+  position: relative;
+}
+
+/* === DASHBOARD TITLE === */
 .dash-dashboard-title {
+  flex: 1;
   text-align: center;
   color: white;
   font-size: 3rem;
   font-weight: 700;
-  margin-bottom: 50px;
+  margin: 0;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   position: relative;
+  overflow-y: hidden;
 }
 
 .dash-dashboard-title::after {
@@ -33,7 +49,88 @@
   border-radius: 2px;
 }
 
-/* Blog Grid */
+/* === SEARCH CONTAINER === */
+.dash-search-container {
+  max-width: 350px;
+  margin: 0;
+}
+
+.dash-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 25px;
+  padding: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.dash-search-wrapper:focus-within {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.dash-search-input {
+  flex: 1;
+  padding: 12px 45px 12px 15px;
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  border-radius: 25px;
+}
+
+.dash-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.dash-search-icon {
+  position: absolute;
+  right: 45px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+.dash-search-clear {
+  position: absolute;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.dash-search-clear:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.dash-search-results {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  margin-top: 7px;
+  margin-bottom: 10px;
+  font-weight: 500;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* === BLOG GRID === */
 .dash-blog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -43,7 +140,7 @@
   padding: 20px;
 }
 
-/* Blog Card */
+/* === BLOG CARD === */
 .dash-blog-card {
   background: white;
   border-radius: 20px;
@@ -78,16 +175,16 @@
   100% { background-position: 0% 50%; }
 }
 
-/* Blog Image */
+/* === BLOG IMAGE === */
 .dash-blog-image {
   width: 300px;
-  height: 300px;
+  height: 250px;
   max-width: 100%;
   object-fit: fill;
   transition: transform 0.3s ease;
   border: 5px solid #667eea;
   border-radius: 20px;
-  margin: 0 auto;
+  margin: 30px auto;
   display: block;
 }
 
@@ -95,7 +192,7 @@
   transform: scale(1.05);
 }
 
-/* Blog Content */
+/* === BLOG CONTENT === */
 .dash-blog-card h2 {
   font-size: 1.4rem;
   font-weight: 700;
@@ -130,12 +227,11 @@
   font-size: 0.95rem;
   height: 10vh;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* Read More Button */
+/* === READ MORE BUTTON === */
 .dash-read-more-btn {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -176,7 +272,7 @@
   transform: translateY(0);
 }
 
-/* No Blogs Message */
+/* === NO BLOGS MESSAGE === */
 .dash-no-blogs {
   text-align: center;
   color: white;
@@ -189,7 +285,7 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Loading State (Optional) */
+/* === LOADING STATE === */
 .dash-blog-card.loading {
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 200% 100%;
@@ -201,47 +297,7 @@
   100% { background-position: -200% 0; }
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .dash-dashboard {
-    padding: 20px 15px;
-  }
-  
-  .dash-dashboard-title {
-    font-size: 2.2rem;
-    margin-bottom: 30px;
-  }
-  
-  .dash-blog-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    padding: 10px;
-  }
-  
-  .dash-blog-card {
-    margin: 0 10px;
-  }
-  
-  .dash-blog-card h2 {
-    font-size: 1.2rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .dash-dashboard-title {
-    font-size: 1.8rem;
-  }
-  
-  .dash-blog-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .dash-blog-image {
-    height: 180px;
-  }
-}
-
-/* Scrollbar Styling */
+/* === SCROLLBAR STYLING === */
 .dash-dashboard::-webkit-scrollbar {
   width: 8px;
 }
@@ -259,7 +315,110 @@
   background: linear-gradient(135deg, #5a6fd8, #6a4190);
 }
 
-/* Footer spacing */
+/* === FOOTER SPACING === */
 .dash-dashboard > :last-child {
   margin-top: 80px;
+}
+
+/* === PAGINATION === */
+.dash-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 40px 0;
+  overflow-x: auto;
+}
+
+.dash-page-btn {
+  flex: none;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  font-size: 0.9rem;
+}
+
+.dash-page-btn:hover:not(:disabled) {
+  background-color: #f0f0f0;
+}
+
+.dash-page-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.dash-page-btn.active {
+  background-color: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+  .dash-dashboard {
+    padding: 20px 15px;
+  }
+
+  .dash-dashboard-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .dash-dashboard-title {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+  }
+
+  .dash-search-container {
+    width: 100%;
+    max-width: 90%;
+  }
+
+  .dash-blog-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 10px;
+  }
+
+  .dash-blog-card h2 {
+    font-size: 1.2rem;
+  }
+
+  .dash-pagination {
+    gap: 5px;
+  }
+
+  .dash-page-btn {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dash-dashboard-title {
+    font-size: 1.8rem;
+  }
+
+  .dash-search-input::placeholder {
+    font-size: 0.8rem;
+  }
+
+  .dash-blog-image {
+    height: 180px;
+  }
+
+  .dash-pagination {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .dash-page-btn {
+    width: 100%;
+    max-width: 200px;
+  }
 }

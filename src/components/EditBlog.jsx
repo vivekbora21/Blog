@@ -86,7 +86,7 @@ const EditBlog = () => {
     <form className="addblog-form" onSubmit={handleSubmit}>
       <h2>Edit Blog</h2>
 
-      <div className="form-group">
+      <div className="form-group" data-count={`${title.length}/50`}>
         <label htmlFor="title">Blog Title</label>
         <input
           id="title"
@@ -99,7 +99,7 @@ const EditBlog = () => {
         />
       </div>
 
-      <div className="form-group">
+      <div className="form-group" data-count={`${content.length}/1000`}>
         <label htmlFor="content">Blog Content</label>
         <textarea
           id="content"
@@ -119,7 +119,7 @@ const EditBlog = () => {
             <img src={`${API_URL}${existingImage}`} alt="Current" style={{ maxWidth: '200px', maxHeight: '200px' }} />
           </div>
         )}
-        <div className="file-input-wrapper">
+        <div className="file-input-wrapper" data-filename={image ? image.name : 'No file chosen'}>
           <input
             id="image"
             type="file"
