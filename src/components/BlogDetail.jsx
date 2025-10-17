@@ -65,7 +65,8 @@ const BlogDetail = () => {
       <div className="blog-detail">
         <h1 className="blog-title">{blog.title}</h1>
         <p className="blog-meta">
-          By {blog.author} • {new Date(blog.created_at).toLocaleDateString()}
+          <span>👤 By {blog.author}</span>
+          <span>📅 {new Date(blog.created_at).toLocaleDateString()}</span>
         </p>
         {blog.image_url && (
           <img
@@ -75,9 +76,7 @@ const BlogDetail = () => {
           />
         )}
         <div className="blog-content">
-          {blog.content.split('\n').map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
-          ))}
+          <p>{blog.content}</p>
         </div>
       </div>
     </div>

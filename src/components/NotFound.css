@@ -6,9 +6,10 @@
   height: 85vh;
   width: 80vw;
   text-align: center;
-  background-color: #f8f9fa;
-  color: #343a40;
+  background: linear-gradient(145deg, #2f3e46, #3c4c58);
+  color: #fff;
   border-radius: 20px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .not-found h1 {
@@ -22,16 +23,16 @@
 }
 
 .not-found a {
-  color: #007bff;
+  color: #61dafb;
   text-decoration: none;
   font-size: 1.1rem;
   padding: 0.5rem 1rem;
-  border: 1px solid #007bff;
+  border: 1px solid #61dafb;
   border-radius: 0.25rem;
   transition: background-color 0.3s, color 0.3s;
 }
 
 .not-found a:hover {
-  background-color: #007bff;
-  color: white;
+  background-color: #61dafb;
+  color: #fff;
 }
